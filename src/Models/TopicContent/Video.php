@@ -87,4 +87,32 @@ class Video extends AbstractTopicFileContent
             }
         });
     }
+
+    public function fixAssetPaths(): array
+    {
+        $topic = $this->topic;
+        $course = $topic->lesson->course;
+        $destination_value = sprintf('courses/%d/topic/%d/%s', $course->id, $topic->id, basename($this->value));
+        $destination_poster = sprintf('courses/%d/topic/%d/%s', $course->id, $topic->id, basename($this->poster));
+        $results = [];
+        $disk = Storage::disk('default');
+
+        if (strpos($this->value, $destination_value) === false && $disk->exists($this->value)) {
+            $disk->move($this->value, $destination_value);
+            $results[] = [$this->value, $destination_value];
+            $this->value = $destination_value;
+        }
+
+        if (strpos($this->poster, $destination_poster) === false && $disk->exists($this->poster)) {
+            $disk->move($this->poster, $destination_poster);
+            $results[] = [$this->poster, $destination_poster];
+            $this->poster = $destination_poster;
+        }
+
+        if (count($results)) {
+            $this->save();
+        }
+
+        return $results;
+    }
 }

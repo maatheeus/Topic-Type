@@ -5,6 +5,8 @@ namespace EscolaLms\TopicTypes;
 use EscolaLms\Courses\Http\Resources\TopicAdminResource;
 use EscolaLms\Courses\Http\Resources\TopicResource;
 use EscolaLms\Courses\Repositories\TopicRepository;
+use EscolaLms\TopicTypes\Commands\FixAssetPathsCommand;
+use EscolaLms\TopicTypes\Commands\FixTopicTypeColumnName;
 use EscolaLms\TopicTypes\Http\Resources\TopicType\Admin\AudioResource as AdminAudioResource;
 use EscolaLms\TopicTypes\Http\Resources\TopicType\Admin\H5PResource as AdminH5PResource;
 use EscolaLms\TopicTypes\Http\Resources\TopicType\Admin\ImageResource as AdminImageResource;
@@ -26,13 +28,26 @@ use EscolaLms\TopicTypes\Models\TopicContent\OEmbed;
 use EscolaLms\TopicTypes\Models\TopicContent\PDF;
 use EscolaLms\TopicTypes\Models\TopicContent\RichText;
 use EscolaLms\TopicTypes\Models\TopicContent\Video;
+use EscolaLms\TopicTypes\Services\Contracts\TopicTypeServiceContract;
+use EscolaLms\TopicTypes\Services\TopicTypeService;
 use Illuminate\Support\ServiceProvider;
 
 class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
 {
+    public $singletons = [
+        TopicTypeServiceContract::class => TopicTypeService::class,
+    ];
+
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                FixTopicTypeColumnName::class,
+                FixAssetPathsCommand::class,
+        ]);
+        }
     }
 
     public function register()

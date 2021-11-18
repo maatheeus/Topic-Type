@@ -57,10 +57,7 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
                 FixAssetPathsCommand::class,
         ]);
         }
-    }
 
-    public function register()
-    {
         Topic::registerContentClasses([
             Audio::class, Video::class, Image::class, RichText::class, H5P::class, OEmbed::class, PDF::class,
         ]);
@@ -106,5 +103,9 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
             'admin' => AdminVideoResource::class,
             'export' => ExportVideoResource::class,
         ]);
+    }
+
+    public function register()
+    {
     }
 }

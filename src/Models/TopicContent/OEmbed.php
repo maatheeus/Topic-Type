@@ -44,4 +44,9 @@ class OEmbed extends AbstractTopicContent
     {
         return \EscolaLms\TopicTypes\Database\Factories\TopicContent\OEmbedFactory::new();
     }
+
+    public function getMorphClass()
+    {
+        return self::class;
+    }
 }

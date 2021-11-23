@@ -68,4 +68,9 @@ class H5P extends AbstractTopicContent
 
         return [[$filepath, $destination_path]];
     }
+
+    public function getMorphClass()
+    {
+        return self::class;
+    }
 }

@@ -5,8 +5,9 @@ namespace Tests\APIs;
 use EscolaLms\Courses\Database\Seeders\CoursesPermissionSeeder;
 use EscolaLms\Courses\Models\Course;
 use EscolaLms\Courses\Models\Lesson;
-use EscolaLms\Courses\Tests\TestCase;
-use EscolaLms\TopicTypes\Events\VideoUpdated;
+use EscolaLms\TopicTypes\Models\TopicContent\Video;
+use EscolaLms\TopicTypes\Tests\TestCase;
+use EscolaLms\TopicTypes\Events\EscolaLmsTopicTypeChangedTemplateEvent;
 use EscolaLms\TopicTypes\Models\TopicContent\Audio;
 use EscolaLms\TopicTypes\Models\TopicContent\Image;
 use EscolaLms\TopicTypes\Models\TopicContent\RichText;
@@ -135,7 +136,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
     public function testCreateTopicVideo()
     {
         Storage::fake('local');
-        Event::fake([VideoUpdated::class]);
+        Event::fake([EscolaLmsTopicTypeChangedTemplateEvent::class]);
 
         $file = UploadedFile::fake()->image('avatar.mp4');
 
@@ -146,7 +147,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
             [
                 'title' => 'Hello World',
                 'lesson_id' => $this->lesson->id,
-                'topicable_type' => 'EscolaLms\TopicTypes\Models\TopicContent\Video',
+                'topicable_type' => Video::class,
                 'value' => $file,
             ]
         );
@@ -164,7 +165,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
             'value' => $path,
         ]);
 
-        Event::assertDispatched(VideoUpdated::class);
+        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class);
     }
 
     public function testCreateTopicRichtext()
@@ -200,7 +201,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
             '/api/admin/topics',
             [
                 'title' => 'Hello World',
-                'topicable_type' => 'EscolaLms\TopicTypes\Models\TopicContent\RichText',
+                'topicable_type' => RichText::class,
                 'value' => 'lorem ipsum',
             ]
         );
@@ -217,7 +218,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
             [
                 'title' => 'Hello World',
                 'lesson_id' => $this->lesson->id,
-                'topicable_type' => 'EscolaLms\TopicTypes\Models\TopicContent\Image',
+                'topicable_type' => Image::class,
                 'value' => 'file',
             ]
         );
@@ -234,7 +235,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
             [
                 'title' => 'Hello World',
                 'lesson_id' => $this->lesson->id,
-                'topicable_type' => 'EscolaLms\TopicTypes\Models\TopicContent\Audio',
+                'topicable_type' => Audio::class,
                 'value' => 'file',
             ]
         );
@@ -253,7 +254,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
             [
                 'title' => 'Hello World',
                 'lesson_id' => $this->lesson->id,
-                'topicable_type' => 'EscolaLms\TopicTypes\Models\TopicContent\Video',
+                'topicable_type' => Video::class,
                 'value' => 'file',
             ]
         );

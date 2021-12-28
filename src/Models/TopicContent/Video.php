@@ -2,7 +2,6 @@
 
 namespace EscolaLms\TopicTypes\Models\TopicContent;
 
-use EscolaLms\TopicTypes\Events\VideoUpdated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Storage;
 
@@ -77,15 +76,6 @@ class Video extends AbstractTopicFileContent
         }
 
         return null;
-    }
-
-    protected static function booted()
-    {
-        static::saved(function (Video $video) {
-            if ($video->wasRecentlyCreated || $video->wasChanged('value')) {
-                event(new VideoUpdated($video));
-            }
-        });
     }
 
     public function fixAssetPaths(): array

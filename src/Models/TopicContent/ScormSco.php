@@ -34,4 +34,9 @@ class ScormSco extends AbstractTopicContent
             'value' => ['required', 'integer', 'exists:scorm_sco,id'],
         ];
     }
+
+    protected static function newFactory()
+    {
+        return \EscolaLms\TopicTypes\Database\Factories\TopicContent\ScormScoFactory::new();
+    }
 }

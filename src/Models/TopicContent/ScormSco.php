@@ -24,6 +24,13 @@ use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
  *          description="value",
  *          type="string"
  *      )
+ *      @OA\Property(
+ *          property="uuid",
+ *          description="uuid",
+ *          @OA\Schema(
+ *             type="string",
+ *         )
+ *      ),
  * )
  */
 class ScormSco extends AbstractTopicContent
@@ -32,10 +39,18 @@ class ScormSco extends AbstractTopicContent
 
     public $table = 'topic_scorm_scos';
 
+    public $fillable = [
+        'value',
+    ];
+
+    protected $casts = [
+        'value' => 'integer',
+    ];
+
     public static function rules(): array
     {
         return [
-            'value' => ['required', 'integer', 'exists:scorm_sco,id'],
+            'value' => ['required', 'integer', 'exists:scorm_sco,id']
         ];
     }
 

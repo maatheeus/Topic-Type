@@ -7,6 +7,7 @@ use EscolaLms\Courses\Models\Lesson;
 use EscolaLms\Courses\Models\Topic;
 use EscolaLms\HeadlessH5P\Dtos\ContentFilterCriteriaDto;
 use EscolaLms\HeadlessH5P\Models\H5PContent;
+use EscolaLms\HeadlessH5P\Models\H5PLibrary;
 use EscolaLms\HeadlessH5P\Repositories\H5PContentRepository;
 use EscolaLms\TopicTypes\Models\TopicContent\H5P;
 use EscolaLms\TopicTypes\Tests\TestCase;
@@ -27,6 +28,13 @@ class TopicTypeH5PTest extends TestCase
         ]);
         $this->topic = Topic::factory()->create([
             'lesson_id' => $lesson->id,
+        ]);
+        $library = H5PLibrary::factory()->create();
+        H5PContent::factory()->create([
+            'library_id' => $library->id,
+        ]);
+        H5PContent::factory()->create([
+            'library_id' => $library->id,
         ]);
     }
 

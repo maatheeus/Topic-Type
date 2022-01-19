@@ -113,7 +113,10 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
             fn () => [['topic_h5ps.value', 'hh5p_contents.id']],
             'topic_h5ps'
         );
-        H5PContentRepository::extendQuerySelect(fn () => DB::raw("COUNT(topic_h5ps.value) as count_h5p"));
-        H5PContentRepository::extendQueryGroupBy(fn () => 'hh5p_contents.id');
+        H5PContentRepository::extendQuerySelect(
+            fn () => DB::raw("COUNT(topic_h5ps.value) as count_h5p"),
+            'topic_h5ps'
+        );
+        H5PContentRepository::extendQueryGroupBy(fn () => 'hh5p_contents.id', 'topic_h5ps');
     }
 }

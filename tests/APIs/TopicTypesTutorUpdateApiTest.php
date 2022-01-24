@@ -7,7 +7,7 @@ use EscolaLms\Courses\Models\Course;
 use EscolaLms\Courses\Models\Lesson;
 use EscolaLms\Courses\Models\Topic;
 use EscolaLms\TopicTypes\Tests\TestCase;
-use EscolaLms\TopicTypes\Events\EscolaLmsTopicTypeChangedTemplateEvent;
+use EscolaLms\TopicTypes\Events\TopicTypeChanged;
 use EscolaLms\TopicTypes\Models\TopicContent\Image;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
@@ -42,7 +42,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
     public function testUpdateTopicImage()
     {
         Storage::fake('local');
-        Event::fake(EscolaLmsTopicTypeChangedTemplateEvent::class);
+        Event::fake(TopicTypeChanged::class);
         $file = UploadedFile::fake()->image('avatar.jpg');
 
         $this->response = $this->withHeaders([
@@ -70,7 +70,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         $this->assertDatabaseHas('topic_images', [
             'value' => $path,
         ]);
-        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(TopicTypeChanged::class, function ($event) {
             return $event->getUser() === $this->user && $event->getTopicContent();
         });
     }
@@ -78,7 +78,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
     public function testUpdateTopicAudio()
     {
         Storage::fake('local');
-        Event::fake(EscolaLmsTopicTypeChangedTemplateEvent::class);
+        Event::fake(TopicTypeChanged::class);
         $file = UploadedFile::fake()->create('avatar.mp3');
 
         $this->response = $this->withHeaders([
@@ -105,7 +105,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         $this->assertDatabaseHas('topic_audios', [
             'value' => $path,
         ]);
-        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(TopicTypeChanged::class, function ($event) {
             return $event->getUser() === $this->user && $event->getTopicContent();
         });
     }
@@ -113,7 +113,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
     public function testUpdateTopicAudioWithNewFile()
     {
         Storage::fake('local');
-        Event::fake(EscolaLmsTopicTypeChangedTemplateEvent::class);
+        Event::fake(TopicTypeChanged::class);
         $file = UploadedFile::fake()->create('avatar.mp3');
 
         $this->response = $this->withHeaders([
@@ -196,7 +196,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
             'id' => $data->data->topicable->id,
             'value' => $path,
         ]);
-        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(TopicTypeChanged::class, function ($event) {
             return $event->getUser() === $this->user && $event->getTopicContent();
         });
     }
@@ -204,7 +204,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
     public function testUpdateTopicVideo()
     {
         Storage::fake('local');
-        Event::fake(EscolaLmsTopicTypeChangedTemplateEvent::class);
+        Event::fake(TopicTypeChanged::class);
 
         $file = UploadedFile::fake()->create('avatar.mp4');
 
@@ -234,14 +234,14 @@ class TopicTypesTutorUpdateApiTest extends TestCase
             'value' => $path,
         ]);
 
-        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(TopicTypeChanged::class, function ($event) {
             return $event->getUser() === $this->user && $event->getTopicContent();
         });
     }
 
     public function testUpdateTopicRichtext()
     {
-        Event::fake(EscolaLmsTopicTypeChangedTemplateEvent::class);
+        Event::fake(TopicTypeChanged::class);
         $this->response = $this->withHeaders([
             'Content' => 'application/x-www-form-urlencoded',
             'Accept' => 'application/json',
@@ -265,7 +265,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         $this->assertDatabaseHas('topic_richtexts', [
             'value' => $path,
         ]);
-        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(TopicTypeChanged::class, function ($event) {
             return $event->getUser() === $this->user && $event->getTopicContent();
         });
     }
@@ -273,7 +273,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
     public function testUpdateTopicPdf()
     {
         Storage::fake('local');
-        Event::fake(EscolaLmsTopicTypeChangedTemplateEvent::class);
+        Event::fake(TopicTypeChanged::class);
         $file = UploadedFile::fake()->create('test.pdf');
 
         $this->response = $this->withHeaders([
@@ -301,7 +301,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         $this->assertDatabaseHas('topic_pdfs', [
             'value' => $path,
         ]);
-        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(TopicTypeChanged::class, function ($event) {
             return $event->getUser() === $this->user && $event->getTopicContent();
         });
     }
@@ -326,7 +326,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
 
     public function testUpdateTopicWithJson()
     {
-        Event::fake(EscolaLmsTopicTypeChangedTemplateEvent::class);
+        Event::fake(TopicTypeChanged::class);
         $this->response = $this->withHeaders([
             'Content' => 'application/x-www-form-urlencoded',
             'Accept' => 'application/json',
@@ -371,7 +371,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         $data = $this->response->json();
 
         $this->assertEquals(['foo' => 'foobar'], $data['data']['lessons'][0]['topics'][0]['json']);
-        Event::assertDispatched(EscolaLmsTopicTypeChangedTemplateEvent::class, function ($event) {
+        Event::assertDispatched(TopicTypeChanged::class, function ($event) {
             return $event->getUser() === $this->user && $event->getTopicContent();
         });
     }

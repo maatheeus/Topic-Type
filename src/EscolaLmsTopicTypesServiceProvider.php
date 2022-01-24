@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypes;
 
 use EscolaLms\Courses\Facades\Topic;
+use EscolaLms\HeadlessH5P\Repositories\H5PContentRepository;
 use EscolaLms\TopicTypes\Commands\FixAssetPathsCommand;
 use EscolaLms\TopicTypes\Commands\FixTopicTypeColumnName;
 use EscolaLms\TopicTypes\Helpers\Markdown;
@@ -38,6 +39,7 @@ use EscolaLms\TopicTypes\Models\TopicContent\ScormSco;
 use EscolaLms\TopicTypes\Models\TopicContent\Video;
 use EscolaLms\TopicTypes\Services\Contracts\TopicTypeServiceContract;
 use EscolaLms\TopicTypes\Services\TopicTypeService;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
@@ -107,5 +109,14 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
 
     public function register()
     {
+        H5PContentRepository::extendQueryJoin(
+            fn () => [['topic_h5ps.value', 'hh5p_contents.id']],
+            'topic_h5ps'
+        );
+        H5PContentRepository::extendQuerySelect(
+            fn () => DB::raw("COUNT(topic_h5ps.value) as count_h5p"),
+            'topic_h5ps'
+        );
+        H5PContentRepository::extendQueryGroupBy(fn () => 'hh5p_contents.id', 'topic_h5ps');
     }
 }

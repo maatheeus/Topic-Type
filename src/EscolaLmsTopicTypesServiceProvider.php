@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypes;
 
 use EscolaLms\Courses\Facades\Topic;
+use EscolaLms\HeadlessH5P\Http\Resources\ContentIndexResource;
 use EscolaLms\HeadlessH5P\Repositories\H5PContentRepository;
 use EscolaLms\TopicTypes\Commands\FixAssetPathsCommand;
 use EscolaLms\TopicTypes\Commands\FixTopicTypeColumnName;
@@ -118,5 +119,8 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
             'topic_h5ps'
         );
         H5PContentRepository::extendQueryGroupBy(fn () => 'hh5p_contents.id', 'topic_h5ps');
+        ContentIndexResource::extend(fn ($thisObj) => [
+            'count_h5p' => $thisObj->count_h5p,
+        ]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace EscolaLms\TopicTypes\Models\TopicContent;
 
-use EscolaLms\TopicTypes\Events\EscolaLmsTopicTypeChangedTemplateEvent;
+use EscolaLms\TopicTypes\Events\TopicTypeChanged;
 use EscolaLms\TopicTypes\Models\Contracts\TopicContentContract;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +15,7 @@ abstract class AbstractTopicContent extends AbstractTopicContentExtend implement
         $user = Auth::user();
         static::saved(function (AbstractTopicContent $topicContent) use ($user) {
             if ($user  && ($topicContent->wasRecentlyCreated || $topicContent->wasChanged('value'))) {
-                event(new EscolaLmsTopicTypeChangedTemplateEvent($user, $topicContent));
+                event(new TopicTypeChanged($user, $topicContent));
             }
         });
     }

@@ -3,12 +3,11 @@
 namespace EscolaLms\TopicTypes\Events;
 
 use EscolaLms\TopicTypes\Models\TopicContent\AbstractTopicContent;
-use EscolaLms\TopicTypes\Models\TopicContent\Video;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class EscolaLmsTopicTypeChangedTemplateEvent
+class TopicTypeChanged
 {
     use Dispatchable;
     use SerializesModels;

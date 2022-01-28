@@ -48,7 +48,7 @@ class TopicTypeH5PTest extends TestCase
 
         $list = $repository->list(new ContentFilterCriteriaDto(new Collection([])));
 
-        $this->assertEquals(2, $list[0]->count_h5p);
-        $this->assertEquals(0, $list[1]->count_h5p);
+        $this->assertEquals(H5P::query()->where('value', '=', $list[0]->id)->count(), $list[0]->count_h5p);
+        $this->assertEquals(H5P::query()->where('value', '=', $list[1]->id)->count(), $list[1]->count_h5p);
     }
 }

@@ -118,7 +118,10 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
             fn () => DB::raw("COUNT(topic_h5ps.value) as count_h5p"),
             'topic_h5ps'
         );
-        H5PContentRepository::extendQueryGroupBy(fn () => 'hh5p_contents.id', 'topic_h5ps');
+        H5PContentRepository::extendQueryGroupBy(
+            fn () => ['hh5p_contents.id', 'hh5p_contents.title', 'hh5p_contents.library_id'],
+            'topic_h5ps'
+        );
         ContentIndexResource::extend(fn ($thisObj) => [
             'count_h5p' => $thisObj->count_h5p,
         ]);

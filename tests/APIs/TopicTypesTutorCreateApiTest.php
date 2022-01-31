@@ -136,7 +136,7 @@ class TopicTypesTutorCreateApiTest extends TestCase
     public function testCreateTopicVideo()
     {
         Storage::fake('local');
-        Event::fake([TopicTypeChanged::class]);
+        Event::fake(TopicTypeChanged::class);
 
         $file = UploadedFile::fake()->image('avatar.mp4');
 

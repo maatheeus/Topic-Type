@@ -12,7 +12,6 @@ use EscolaLms\TopicTypes\Models\TopicContent\Audio;
 use EscolaLms\TopicTypes\Models\TopicContent\H5P;
 use EscolaLms\TopicTypes\Models\TopicContent\OEmbed;
 use EscolaLms\TopicTypes\Models\TopicContent\RichText;
-use EscolaLms\TopicTypes\Models\TopicContent\ScormSco;
 use EscolaLms\TopicTypes\Models\TopicContent\Video;
 use EscolaLms\TopicTypes\Tests\TestCase;
 use EscolaLms\TopicTypes\Events\TopicTypeChanged;
@@ -44,10 +43,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     */
-    public function testUpdateTopicImage()
+    public function testUpdateTopicImage(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -83,7 +79,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicAudio()
+    public function testUpdateTopicAudio(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -118,7 +114,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicAudioWithNewFile()
+    public function testUpdateTopicAudioWithNewFile(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -209,7 +205,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicVideo()
+    public function testUpdateTopicVideo(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -247,7 +243,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicRichtext()
+    public function testUpdateTopicRichtext(): void
     {
         Event::fake(TopicTypeChanged::class);
         $this->response = $this->withHeaders([
@@ -278,7 +274,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicPdf()
+    public function testUpdateTopicPdf(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -314,7 +310,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicWrongClass()
+    public function testUpdateTopicWrongClass(): void
     {
         $this->response = $this->withHeaders([
             'Content' => 'application/x-www-form-urlencoded',
@@ -332,7 +328,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         $this->response->assertStatus(422);
     }
 
-    public function testUpdateTopicWithJson()
+    public function testUpdateTopicWithJson(): void
     {
         Event::fake(TopicTypeChanged::class);
         $this->response = $this->withHeaders([
@@ -384,7 +380,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicImageWithReusableFile()
+    public function testUpdateTopicImageWithReusableFile(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -418,7 +414,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicAudioWithReusableFile()
+    public function testUpdateTopicAudioWithReusableFile(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -452,7 +448,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicVideoWithReusableFile()
+    public function testUpdateTopicVideoWithReusableFile(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -493,7 +489,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicH5PWithReusableFile()
+    public function testUpdateTopicH5PWithReusableFile(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -529,7 +525,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicOEmbed()
+    public function testUpdateTopicOEmbed(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);
@@ -558,7 +554,7 @@ class TopicTypesTutorUpdateApiTest extends TestCase
         });
     }
 
-    public function testUpdateTopicRichTextNew()
+    public function testUpdateTopicRichTextNew(): void
     {
         Storage::fake('local');
         Event::fake(TopicTypeChanged::class);

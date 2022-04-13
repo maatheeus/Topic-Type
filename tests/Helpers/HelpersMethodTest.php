@@ -7,6 +7,7 @@ use EscolaLms\Courses\Models\Lesson;
 use EscolaLms\Courses\Models\Topic;
 use EscolaLms\TopicTypes\Facades\Markdown;
 use EscolaLms\TopicTypes\Facades\Path;
+use EscolaLms\TopicTypes\Services\TopicTypeService;
 use EscolaLms\TopicTypes\Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
@@ -51,6 +52,13 @@ class HelpersMethodTest extends TestCase
     public function testSanitizePathForExport(): void
     {
         $result = Path::sanitizePathForExport("courses/1234/topic/123/test.jpg");
+
+        $this->assertEquals('topic/123/test.jpg', $result);
+    }
+
+    public function testSanitizePathFromTopicTypeService(): void
+    {
+        $result = TopicTypeService::sanitizePath("course/1234/topic/123/test.jpg");
 
         $this->assertEquals('topic/123/test.jpg', $result);
     }

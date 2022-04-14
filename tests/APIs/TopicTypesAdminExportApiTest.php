@@ -52,11 +52,9 @@ class TopicTypesAdminExportApiTest extends TestCase
         Storage::put('dummy.pdf', 'Some dummy data');
         $this->h5p = H5PHelper::createH5PContent();
 
-        $course = Course::factory()->create([
-            'author_id' => $this->user->id,
-        ]);
+
         $lesson = Lesson::factory()->create([
-            'course_id' => $course->id,
+            'course_id' => $this->course->id,
         ]);
         $topic_audio = Topic::factory()->create([
             'lesson_id' => $lesson->id,
@@ -106,15 +104,6 @@ class TopicTypesAdminExportApiTest extends TestCase
         $topic_richtext->topicable()->associate($topicable_richtext)->save();
         $topic_oembed->topicable()->associate($topicable_oembed)->save();
         $topic_h5p->topicable()->associate($topicable_h5p)->save();
-
-        $this->course_id = $course->id;
-
-        $this->topic_audio_id = $topic_audio->id;
-        $this->topic_image_id = $topic_image->id;
-        $this->topic_pdf_id = $topic_pdf->id;
-        $this->topic_video_id = $topic_video->id;
-        $this->topic_h5p_id = $topic_h5p->id;
-        $this->topic_richtext_id = $topic_richtext->id;
     }
 
     public function testExportTopic(): void
@@ -123,7 +112,7 @@ class TopicTypesAdminExportApiTest extends TestCase
         Event::fake(TopicTypeChanged::class);
 
         $this->response = $this->actingAs($this->user, 'api')->get(
-            '/api/admin/courses/' . $this->course->id . '/export'
+            '/api/admin/courses/' . $this->course->getKey() . '/export'
         );
 
         $this->response->assertStatus(200);

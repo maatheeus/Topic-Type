@@ -62,4 +62,16 @@ class HelpersMethodTest extends TestCase
 
         $this->assertEquals('topic/123/test.jpg', $result);
     }
+
+    public function testConvertImagesPathsForImageApiByHttp(): void
+    {
+        $topic = $this->topic;
+        $course = $topic->lesson->course;
+        $destinationPrefix = sprintf('course/%d/topic/%d/', $course->id, $topic->id);
+        Storage::disk('public')->makeDirectory($destinationPrefix);
+        $result = Markdown::convertImagesPathsForImageApi("![Image] (https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_272x92dp.png)", $destinationPrefix);
+        $this->assertArrayHasKey('results', $result);
+        $this->assertTrue(is_array($result['results']));
+        $this->assertTrue(isset($result['results'][0]) && is_array($result['results'][0]));
+    }
 }

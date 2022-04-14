@@ -18,7 +18,6 @@ use EscolaLms\TopicTypes\Tests\TestCase;
 use EscolaLms\TopicTypes\Events\TopicTypeChanged;
 use EscolaLms\TopicTypes\Models\TopicContent\Image;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 
@@ -52,31 +51,16 @@ class TopicTypesAdminExportApiTest extends TestCase
         Storage::put('dummy.pdf', 'Some dummy data');
         $this->h5p = H5PHelper::createH5PContent();
 
-
         $lesson = Lesson::factory()->create([
             'course_id' => $this->course->id,
         ]);
-        $topic_audio = Topic::factory()->create([
-            'lesson_id' => $lesson->id,
-        ]);
-        $topic_image = Topic::factory()->create([
-            'lesson_id' => $lesson->id,
-        ]);
-        $topic_pdf = Topic::factory()->create([
-            'lesson_id' => $lesson->id,
-        ]);
-        $topic_video = Topic::factory()->create([
-            'lesson_id' => $lesson->id,
-        ]);
-        $topic_richtext = Topic::factory()->create([
-            'lesson_id' => $lesson->id,
-        ]);
-        $topic_oembed = Topic::factory()->create([
-            'lesson_id' => $lesson->id,
-        ]);
-        $topic_h5p = Topic::factory()->create([
-            'lesson_id' => $lesson->id,
-        ]);
+
+        $prepareDataArray = ['audio' => null, 'image' => null, 'pdf' => null, 'video' => null, 'richtext' => null, 'oembed' => null, 'h5p' => null];
+        foreach ($prepareDataArray as &$type) {
+            $type = Topic::factory()->create([
+                'lesson_id' => $lesson->id,
+            ]);
+        }
 
         $topicable_audio = Audio::factory()->create([
             'value' => 'dummy.mp3',
@@ -97,13 +81,13 @@ class TopicTypesAdminExportApiTest extends TestCase
             'value' => $this->h5p->id
         ]);
 
-        $topic_audio->topicable()->associate($topicable_audio)->save();
-        $topic_image->topicable()->associate($topicable_image)->save();
-        $topic_pdf->topicable()->associate($topicable_pdf)->save();
-        $topic_video->topicable()->associate($topicable_video)->save();
-        $topic_richtext->topicable()->associate($topicable_richtext)->save();
-        $topic_oembed->topicable()->associate($topicable_oembed)->save();
-        $topic_h5p->topicable()->associate($topicable_h5p)->save();
+        $prepareDataArray['audio']->topicable()->associate($topicable_audio)->save();
+        $prepareDataArray['image']->topicable()->associate($topicable_image)->save();
+        $prepareDataArray['pdf']->topicable()->associate($topicable_pdf)->save();
+        $prepareDataArray['video']->topicable()->associate($topicable_video)->save();
+        $prepareDataArray['richtext']->topicable()->associate($topicable_richtext)->save();
+        $prepareDataArray['oembed']->topicable()->associate($topicable_oembed)->save();
+        $prepareDataArray['h5p']->topicable()->associate($topicable_h5p)->save();
     }
 
     public function testExportTopic(): void

@@ -47,6 +47,7 @@ use EscolaLms\TopicTypes\Models\TopicContent\PDF;
 use EscolaLms\TopicTypes\Models\TopicContent\RichText;
 use EscolaLms\TopicTypes\Models\TopicContent\ScormSco;
 use EscolaLms\TopicTypes\Models\TopicContent\Video;
+use EscolaLms\TopicTypes\Models\TopicContent\Game;
 use EscolaLms\TopicTypes\Services\Contracts\TopicTypeServiceContract;
 use EscolaLms\TopicTypes\Services\TopicTypeService;
 use Illuminate\Database\PostgresConnection;
@@ -84,6 +85,7 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
             OEmbed::class,
             PDF::class,
             ScormSco::class,
+            Game::class
         ]);
         Topic::registerResourceClasses(Audio::class, [
             'client' => ClientAudioResource::class,
@@ -124,6 +126,11 @@ class EscolaLmsTopicTypesServiceProvider extends ServiceProvider
             'client' => ClientScormScoResource::class,
             'admin' => AdminScormScoResource::class,
             'export' => ExportScormScoResource::class,
+        ]);
+        Topic::registerResourceClasses(Game::class, [
+            'client' => ClientGameResource::class,
+            'admin' => AdminGameResource::class,
+            'export' => ExportGameResource::class,
         ]);
         if (class_exists(EscolaLmsCmi5ServiceProvider::class)) {
             Topic::registerContentClasses([
